@@ -13,7 +13,7 @@ public class GoogleTest {
     @BeforeClass
     public void setUp() {
         // Если тест будет крутиться в CI — раскомментируешь это:
-        // Configuration.remote = "http://localhost:4444/wd/hub";
+         Configuration.remote = "http://localhost:4444/wd/hub";
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
     }
