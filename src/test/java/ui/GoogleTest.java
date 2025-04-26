@@ -15,6 +15,7 @@ public class GoogleTest {
         // Если тест будет крутиться в CI — раскомментируешь это:
          Configuration.remote = "http://localhost:4444/wd/hub";
         Configuration.browser = "chrome";
+        Configuration.browserCapabilities.setCapability("enableVideo", true);
         Configuration.browserSize = "1920x1080";
     }
 
