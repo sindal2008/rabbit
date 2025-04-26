@@ -47,3 +47,9 @@ jobs:
         with:
           name: selenoid-videos
           path: ./selenoid/video/*.mp4
+
+      - name: Echo link to video artifact
+        if: always()
+        run: |
+          echo "🎥 Видео с теста можно скачать здесь:"
+          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
