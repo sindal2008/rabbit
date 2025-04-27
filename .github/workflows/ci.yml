@@ -27,12 +27,12 @@ jobs:
               "versions": {
                 "116.0": {
                   "image": "selenoid/chrome:116.0",
-                  "port": "4444",
                   "path": "/"
                 }
               }
             }
           }
+          EOF
 
       - name: Pull and run Selenoid
         run: |
@@ -40,10 +40,9 @@ jobs:
           docker pull selenoid/chrome:116.0
           docker pull selenoid/video-recorder:latest-release
 
-          docker network create selenoid || true
+          mkdir -p video
 
           docker run -d --name selenoid \
-            --network selenoid \
             -p 4444:4444 \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v ${{ github.workspace }}/config:/etc/selenoid/:ro \
@@ -66,7 +65,6 @@ jobs:
           echo "Selenoid did not become ready in time!"
           docker logs selenoid || true
           exit 1
-      
 
       - name: Run Tests with Maven
         run: |
