@@ -17,13 +17,31 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      - name: Create browsers.json
+        run: |
+          mkdir -p config
+          cat <<EOF > config/browsers.json
+          {
+            "chrome": {
+              "default": "116.0",
+              "versions": {
+                "116.0": {
+                  "image": "selenoid/chrome:116.0",
+                  "port": "4444",
+                  "path": "/"
+                }
+              }
+            }
+          }
+
       - name: Pull and run Selenoid
         run: |
           docker pull aerokube/selenoid:latest-release
+          docker pull selenoid/chrome:116.0
           docker pull selenoid/video-recorder:latest-release
-          
+
           docker network create selenoid || true
-          
+
           docker run -d --name selenoid \
             --network selenoid \
             -p 4444:4444 \
