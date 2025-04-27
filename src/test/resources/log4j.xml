@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Конфигурация для корневого логгера -->
+    <root level="debug">
+        <appender-ref ref="stdout"/>
+    </root>
+
+    <!-- Конфигурация для вывода в консоль -->
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss.SSS} [%t] %-5p %c{1} - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- Логирование для пакета Selenium -->
+    <logger name="org.openqa.selenium" level="info"/>
+
+</configuration>
