@@ -21,6 +21,9 @@ jobs:
           --health-interval 5s
           --health-timeout 3s
           --health-retries 10
+        environment:
+          - GITHUB_ACTIONS=true
+          - CI=true
 
     steps:
       - name: Checkout code
