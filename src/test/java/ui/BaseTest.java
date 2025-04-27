@@ -17,7 +17,7 @@ public abstract class BaseTest {
 
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> selenoidOptions = new HashMap<>();
-        selenoidOptions.put("enableVideo", true);
+//        selenoidOptions.put("enableVideo", true);
         options.setCapability("selenoid:options", selenoidOptions);
 
         // Генерация уникальной директории для пользовательских данных

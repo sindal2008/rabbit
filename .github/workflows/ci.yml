@@ -58,16 +58,3 @@ jobs:
         run: mvn clean test
         env:
           SELENIDE_REMOTE: http://localhost:4444/wd/hub
-
-      - name: Upload test videos
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: selenoid-videos
-          path: ./selenoid/video/*.mp4
-
-      - name: Echo link to video artifact
-        if: always()
-        run: |
-          echo "🎥 Видео с теста можно скачать здесь:"
-          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
