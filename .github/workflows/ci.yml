@@ -16,7 +16,7 @@ jobs:
         ports:
           - 4444:4444
         options: >-
-          --mount type=bind,source=${{ github.workspace }}/src/test/resources/browsers.json,target=/etc/selenoid/browsers.json
+          --mount type=bind,source=/src/test/resources/browsers.json,target=/etc/selenoid/browsers.json
           --health-cmd "curl -f http://localhost:4444/wd/hub/status || exit 1"
           --health-interval 5s
           --health-timeout 3s
