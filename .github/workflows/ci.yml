@@ -1,4 +1,4 @@
-name: Run Selenium Tests with Selenoid
+name: Run Selenium Tests with Video
 
 on:
   push:
@@ -11,20 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      selenoid:
-        image: aerokube/selenoid:latest  # Используем правильный образ для Selenoid
+      selenium:
+        image: selenium/standalone-chrome:latest
         ports:
           - 4444:4444
         options: >-
-          --mount type=bind,source=${{ github.workspace }}\srс\browsers.json,target=/etc/selenoid/browsers.json
           --health-cmd "curl -f http://localhost:4444/wd/hub/status || exit 1"
           --health-interval 5s
           --health-timeout 3s
           --health-retries 10
-        environment:
-          - GITHUB_ACTIONS=true
-          - CI=true
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,15 +30,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      # Шаг для кэширования Maven зависимостей
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository  # Путь к локальному Maven репозиторию
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}  # Уникальный ключ для кэширования
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       # Шаг для кэширования Docker образов
       - name: Cache Docker images
         id: cache-docker
@@ -53,16 +39,19 @@ jobs:
           key: ${{ runner.os }}-docker-cache-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
             ${{ runner.os }}-docker-cache-
-
       # Если кэшированного образа нет, то загружаем заново
-      - name: Pull Selenoid Docker image
+      - name: Pull Selenium Docker image
         run: |
-          if [ ! -f /tmp/.docker-image-cache/selenoid/standalone-chrome ]; then
-            docker pull aerokube/selenoid:latest  # Загружаем правильный образ для Selenoid
-            mkdir -p /tmp/.docker-image-cache/selenoid
-            touch /tmp/.docker-image-cache/selenoid/standalone-chrome
+          if [ ! -f /tmp/.docker-image-cache/selenium/standalone-chrome ]; then
+            docker pull selenium/standalone-chrome:latest
+            mkdir -p /tmp/.docker-image-cache/selenium
+            touch /tmp/.docker-image-cache/selenium/standalone-chrome
           fi
-
-      - name: Wait for Selenoid to be ready
+      - name: Wait for Selenium to be ready
         run: |
-          echo
+          echo "Waiting for Selenium to be ready..."
+          sleep 15
+      - name: Run tests with Maven
+        run: mvn clean test
+        env:
+          SELENIDE_REMOTE: http://localhost:4444/wd/hub
