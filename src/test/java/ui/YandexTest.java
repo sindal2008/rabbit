@@ -6,12 +6,12 @@ import org.testng.annotations.Test;
 import static com.codeborne.selenide.Selenide.*;
 import static org.testng.Assert.assertTrue;
 
-public class GoogleTest extends BaseTest {
+public class YandexTest extends BaseTest {
 
     @Test
-    public void googlePageTitleShouldContainGoogle() {
-        open("https://www.google.com");
+    public void yandexPageTitleShouldContainYandex() {
+        open("https://www.yandex.ru");
         String title = Selenide.title();
-        assertTrue(title.contains("Google"), "Page title should contain 'Google'");
+        assertTrue(title.contains("Дзен"), "Page title should contain 'Yandex'");
     }
 }
