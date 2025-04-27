@@ -50,6 +50,7 @@ jobs:
             -e OVERRIDE_VIDEO_OUTPUT_DIR=true \
             -e ENABLE_VIDEO=true \
             aerokube/selenoid:latest-release
+            -limit 1
 
       - name: Wait for Selenoid to be ready
         run: |
