@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Selenium Tests Suite">
-    <test name="Google Test" parallel="tests" thread-count="3">
+    <test name="Google Test" parallel="classes" thread-count="3">
         <classes>
             <class name="ui.GoogleTest"/>
-        </classes>
-    </test>
-
-    <test name="Yandex Test">
-        <classes>
             <class name="ui.YandexTest"/>
-        </classes>
-    </test>
-
-    <test name="Rambler Test">
-        <classes>
             <class name="ui.RamblerTest"/>
         </classes>
     </test>
