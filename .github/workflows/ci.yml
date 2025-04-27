@@ -30,10 +30,30 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      # Шаг для кэширования Docker образов
+      - name: Cache Docker images
+        id: cache-docker
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.docker-image-cache
+          key: ${{ runner.os }}-docker-cache-${{ hashFiles('**/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-cache-
+
+      # Если кэшированного образа нет, то загружаем заново
+      - name: Pull Selenium Docker image
+        run: |
+          if [ ! -f /tmp/.docker-image-cache/selenium/standalone-chrome ]; then
+            docker pull selenium/standalone-chrome:latest
+            mkdir -p /tmp/.docker-image-cache/selenium
+            touch /tmp/.docker-image-cache/selenium/standalone-chrome
+          fi
+
       - name: Wait for Selenium to be ready
         run: |
           echo "Waiting for Selenium to be ready..."
           sleep 15
+
       - name: Run tests with Maven
         run: mvn clean test
         env:
