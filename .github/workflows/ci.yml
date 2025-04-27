@@ -49,7 +49,8 @@ jobs:
             -v ${{ github.workspace }}/video:/opt/selenoid/video \
             -e OVERRIDE_VIDEO_OUTPUT_DIR=true \
             -e ENABLE_VIDEO=true \
-            aerokube/selenoid:latest-release
+            aerokube/selenoid:latest-release \
+            --\
             -limit 1
 
       - name: Wait for Selenoid to be ready
