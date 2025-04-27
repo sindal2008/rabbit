@@ -10,6 +10,16 @@ jobs:
   selenide-tests:
     runs-on: ubuntu-latest
 
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+        options: >-
+          --health-cmd "curl -f http://localhost:4444/wd/hub/status || exit 1"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,48 +30,27 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      # Кэширование Maven зависимостей
-      - name: Cache Maven dependencies
+      # Шаг для кэширования Docker образов
+      - name: Cache Docker images
+        id: cache-docker
         uses: actions/cache@v3
         with:
-          path: ~/.m2/repository  # Путь к локальному Maven репозиторию
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}  # Уникальный ключ для кэширования
+          path: /tmp/.docker-image-cache
+          key: ${{ runner.os }}-docker-cache-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
-            ${{ runner.os }}-maven-
-
-      # Кэширование Docker-образа Selenium
-      - name: Cache selenium Docker image
-        uses: actions/cache@v3
-        with:
-          path: /tmp/selenium-image.tar.gz
-          key: selenium-image-${{ runner.os }}-${{ hashFiles('**/selenium-image.tar.gz') }}
-          restore-keys: |
-            selenium-image-${{ runner.os }}-
-
-      # Скачивание и кэширование Docker-образа Selenium
-      - name: Pull selenium Docker image if not cached
+            ${{ runner.os }}-docker-cache-
+      # Если кэшированного образа нет, то загружаем заново
+      - name: Pull Selenium Docker image
         run: |
-          if [ ! -f /tmp/selenium-image.tar.gz ]; then
+          if [ ! -f /tmp/.docker-image-cache/selenium/standalone-chrome ]; then
             docker pull selenium/standalone-chrome:latest
-            docker save selenium/standalone-chrome:latest | gzip > /tmp/selenium-image.tar.gz
+            mkdir -p /tmp/.docker-image-cache/selenium
+            touch /tmp/.docker-image-cache/selenium/standalone-chrome
           fi
-
-      # Загружаем кэшированный Docker-образ
-      - name: Load selenium Docker image from cache
+      - name: Wait for Selenium to be ready
         run: |
-          if [ -f /tmp/selenium-image.tar.gz ]; then
-            docker load < /tmp/selenium-image.tar.gz
-          fi
-
-      # Сервис Selenium
-      - name: Start Selenium service container
-        run: |
-          docker run -d -p 4444:4444 selenium/standalone-chrome:latest
-          # Можно добавить задержку, чтобы сервис полностью поднялся
           echo "Waiting for Selenium to be ready..."
           sleep 15
-
-      # Запуск тестов с Maven
       - name: Run tests with Maven
         run: mvn clean test
         env:
