@@ -36,11 +36,11 @@
       <version>7.9.1</version>
     </dependency>
 
-    <!-- SLF4J API -->
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>2.0.0-alpha1</version> <!-- или более новая версия -->
+      <version>1.7.36</version> <!-- Use the latest version -->
     </dependency>
 
     <!-- SLF4J Log4j2 мост -->

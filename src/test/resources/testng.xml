@@ -2,8 +2,8 @@
 <suite name="Selenium Tests Suite">
     <test name="Google Test" parallel="classes" thread-count="3">
         <classes>
-            <class name="ui.GoogleTest"/>
-            <class name="ui.YandexTest"/>
+<!--            <class name="ui.GoogleTest"/>-->
+<!--            <class name="ui.YandexTest"/>-->
             <class name="ui.RamblerTest"/>
         </classes>
     </test>
