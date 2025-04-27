@@ -54,16 +54,15 @@ jobs:
 
       - name: Wait for Selenoid to be ready
         run: |
-          echo "Waiting for Selenoid to be ready..."
-          for i in {1..15}; do
+          for i in {1..30}; do
             if curl -s http://localhost:4444/status | grep -q '"total":'; then
-              echo "Selenoid is up!"
+              echo "Selenoid is ready!"
               exit 0
             fi
-            sleep 2
+            echo "Waiting for Selenoid to be ready ($i/30)..."
+            sleep 1
           done
-          echo "Selenoid did not start in time."
-          docker logs selenoid
+          echo "Selenoid did not become ready in time!"
           exit 1
 
       - name: Run Tests with Maven
