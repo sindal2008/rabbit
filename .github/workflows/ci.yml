@@ -2,78 +2,52 @@ name: Run Selenium Tests with Video
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  test:
+  selenide-tests:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Set up Java
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+        options: >-
+          --health-cmd "curl -f http://localhost:4444/wd/hub/status || exit 1"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
         uses: actions/setup-java@v3
         with:
-          distribution: temurin
-          java-version: 21
+          distribution: 'temurin'
+          java-version: '21'
 
-      - name: Create browsers.json
+      - name: Wait for Selenium to be ready
         run: |
-          mkdir -p config
-          cat <<EOF > config/browsers.json
-          {
-            "chrome": {
-              "default": "116.0",
-              "versions": {
-                "116.0": {
-                  "image": "selenoid/chrome:116.0",
-                  "path": "/"
-                }
-              }
-            }
-          }
-          EOF
+          echo "Waiting for Selenium to be ready..."
+          sleep 15
+      - name: Run tests with Maven
+        run: mvn clean test
+        env:
+          SELENIDE_REMOTE: http://localhost:4444/wd/hub
 
-      - name: Pull and run Selenoid
-        run: |
-          docker pull aerokube/selenoid:latest-release
-          docker pull selenoid/chrome:116.0
-          docker pull selenoid/video-recorder:latest-release
-
-          mkdir -p video
-
-          docker run -d --name selenoid \
-            -p 4444:4444 \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -v ${{ github.workspace }}/config:/etc/selenoid/:ro \
-            -v ${{ github.workspace }}/video:/opt/selenoid/video \
-            -e OVERRIDE_VIDEO_OUTPUT_DIR=true \
-            -e ENABLE_VIDEO=true \
-            aerokube/selenoid:latest-release \
-            --\
-            -limit 1
-
-      - name: Wait for Selenoid to be ready
-        run: |
-          echo "Waiting for Selenoid to be ready..."
-          for i in {1..60}; do
-            if curl -s http://localhost:4444/status | grep -q '"total":'; then
-              echo "Selenoid is ready!"
-              exit 0
-            fi
-            echo "Waiting... ($i/60)"
-            sleep 1
-          done
-          echo "Selenoid did not become ready in time!"
-          docker logs selenoid || true
-          exit 1
-
-      - name: Run Tests with Maven
-        run: |
-          mvn clean test -Dselenide.remote=http://localhost:4444/wd/hub -Dselenide.browser=chrome
-
-      - name: Upload videos
+      - name: Upload test videos
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: test-videos
-          path: ./video/*.mp4
+          name: selenoid-videos
+          path: ./selenoid/video/*.mp4
+
+      - name: Echo link to video artifact
+        if: always()
+        run: |
+          echo "🎥 Видео с теста можно скачать здесь:"
+          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
