@@ -1,9 +1,10 @@
+
 # Используем Maven с Java 21
 FROM maven:3.9.6-eclipse-temurin-21
 
-# Устанавливаем FFMPEG
+# Устанавливаем FFMPEG и Xvfb
 RUN apt-get update && \
-    apt-get install -y ffmpeg && \
+    apt-get install -y ffmpeg xvfb && \
     apt-get clean
 
 # Устанавливаем рабочую директорию
