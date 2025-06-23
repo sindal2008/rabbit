@@ -34,3 +34,16 @@ jobs:
             -v ${{ github.workspace }}:/app \
             ui-tests-image \
             mvn clean test
+
+      - name: Archive target folder
+        run: |
+          cd target
+          zip -r ../target.zip .
+        if: always()
+
+      - name: Upload target folder as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: target-folder
+          path: target.zip
+        if: always()
