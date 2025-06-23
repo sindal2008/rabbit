@@ -33,7 +33,7 @@ jobs:
             -e DISPLAY=:99 \
             -v ${{ github.workspace }}:/app \
             ui-tests-image \
-            mvn clean test
+            mvn clean test -Dvideo.folder=target/videos -Dvideo.enabled=true -Dvideo.mode=ALL -Drecorder.type=FFMPEG -Dvideo.save.mode=ALL
 
       - name: Archive target folder
         run: |
