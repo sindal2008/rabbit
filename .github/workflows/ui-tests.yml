@@ -33,7 +33,7 @@ jobs:
             -e DISPLAY=:99 \
             -v ${{ github.workspace }}:/app \
             ui-tests-image \
-            mvn test \
+            mvn clean test \
               -Dvideo.folder=target/videos \
               -Dvideo.enabled=true \
               -Dvideo.mode=ALL \
