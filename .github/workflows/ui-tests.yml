@@ -39,7 +39,7 @@ jobs:
           -Dvideo.mode=ALL \
           -Drecorder.type=FFMPEG \
           -Dvideo.save.mode=ALL \
-          -Dsurefire.suiteXmlFiles=./src/test/java/suites/FrontEndSuite.xml
+          -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml
 
 
       - name: Archive target folder
