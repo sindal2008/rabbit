@@ -29,7 +29,7 @@ jobs:
             -v ${{ github.workspace }}:/app \
             ui-tests-image \
             mvn test \
-              -Dvideo.folder=target/videos \
+              -Dvideo.folder=target\videos \
               -Dvideo.enabled=true \
               -Dvideo.mode=ALL \
               -Drecorder.type=FFMPEG \
