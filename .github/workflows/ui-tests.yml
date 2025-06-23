@@ -38,5 +38,4 @@ jobs:
               -Dvideo.enabled=true \
               -Dvideo.mode=ALL \
               -Drecorder.type=FFMPEG \
-              -Dvideo.save.mode=ALL \
-              -Dsurefire.suiteXmlFiles=/app/src/test/resources/testng.xml
+              -Dvideo.save.mode=ALL
