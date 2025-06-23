@@ -12,15 +12,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 
   <dependencies>
-    <!-- Клиент для работы с RabbitMQ -->
-    <dependency>
-      <groupId>com.rabbitmq</groupId>
-      <artifactId>amqp-client</artifactId>
-      <version>5.14.2</version>
-    </dependency>
 
     <!-- TestNG для тестирования -->
     <dependency>
@@ -36,6 +32,12 @@
       <version>7.9.1</version>
     </dependency>
 
+    <!-- Video recording  -->
+    <dependency>
+      <groupId>com.automation-remarks</groupId>
+      <artifactId>video-recorder-testng</artifactId>
+      <version>2.0</version>
+    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
