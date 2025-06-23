@@ -42,7 +42,7 @@ jobs:
         if: always()
 
       - name: Upload target folder as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: target-folder
           path: target.zip
