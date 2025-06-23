@@ -17,6 +17,11 @@ jobs:
       - name: Build Docker image without cache
         run: docker build --no-cache -t ui-tests-image -f Dockerfile .
 
+      - name: Test ffmpeg startup
+        run: |
+          echo "Testing ffmpeg startup..."
+          docker run --rm ui-tests-image ffmpeg -f lavfi -i testsrc=duration=3:size=640x480:rate=25 -y /app/test.mp4
+
       - name: Start virtual display
         run: |
           Xvfb :99 -screen 0 1920x1080x24 &
