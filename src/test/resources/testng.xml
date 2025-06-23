@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Selenium Tests Suite">
+
+    <listeners>
+        <listener class-name="com.automation.remarks.testng.UniversalVideoListener"/>
+    </listeners>
+
     <test name="Google Test" parallel="classes" thread-count="3">
         <classes>
-<!--            <class name="ui.GoogleTest"/>-->
+            <class name="ui.GoogleTest"/>
 <!--            <class name="ui.YandexTest"/>-->
-            <class name="ui.RamblerTest"/>
+<!--            <class name="ui.RamblerTest"/>-->
         </classes>
     </test>
 </suite>
