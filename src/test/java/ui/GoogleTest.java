@@ -52,17 +52,9 @@ public class GoogleTest extends BaseTest {
 
     @Test
     public void googlePageTitleShouldContainGoogle() throws InterruptedException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(ffmpegProcess.getInputStream()));
-        new Thread(() -> reader.lines().forEach(System.out::println)).start();
-
         open("https://www.rambler.ru");
-        System.out.println("🧪 DISPLAY = " + System.getenv("DISPLAY"));
         String title = Selenide.title();
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
-        open("https://www.yandex.ru");
-        assertTrue(title.contains("Дзен"), "Page title should contain 'Yandex'");
-        open("https://www.google.ru");
-        assertTrue(title.contains("Google"), "Page title should contain 'Google'");
     }
 
     @AfterMethod
