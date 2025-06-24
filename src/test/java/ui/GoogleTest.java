@@ -7,8 +7,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -32,7 +34,7 @@ public class GoogleTest extends BaseTest {
                 "-y",
                 "-f", "x11grab",
                 "-video_size", "1536x768",
-                "-i", "99.0",
+                "-i", System.getenv("DISPLAY") + ".0",
                 "-codec:v", "libx264",
                 "-preset", "ultrafast",
                 videoName
@@ -42,6 +44,7 @@ public class GoogleTest extends BaseTest {
             new File("target/video").mkdirs();
             ffmpegProcess = builder.start();
             Thread.sleep(2000);
+            System.out.println("▶️ Starting ffmpeg with DISPLAY = " + System.getenv("DISPLAY"));
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -49,6 +52,9 @@ public class GoogleTest extends BaseTest {
 
     @Test
     public void googlePageTitleShouldContainGoogle() throws InterruptedException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(ffmpegProcess.getInputStream()));
+        new Thread(() -> reader.lines().forEach(System.out::println)).start();
+
         open("https://www.rambler.ru");
         System.out.println("🧪 DISPLAY = " + System.getenv("DISPLAY"));
         String title = Selenide.title();
