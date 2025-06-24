@@ -37,13 +37,13 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
     rm -rf /var/lib/apt/lists/*
 
 # Переменная окружения для Xvfb
-ENV DISPLAY=:99
+# ENV DISPLAY=:99
 
 # Рабочая директория
 WORKDIR /app
 COPY . .
 
 # Запуск Xvfb и тестов
-CMD xvfb-run --server-args="-screen 0 1920x1080x24" mvn test \
+CMD xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" mvn test \
   -Dvideo.enabled=false \
   -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml

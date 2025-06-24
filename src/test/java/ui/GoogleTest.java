@@ -18,6 +18,10 @@ public class GoogleTest extends BaseTest {
 
     @BeforeMethod
     public void startRecording(Method method) {
+        String display = System.getenv("DISPLAY");
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("Using DISPLAY=" + display); // Для отладки
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
         String methodName = method.getName();
         String videoName = "target/video/" + methodName + ".mp4";
         ProcessBuilder builder = new ProcessBuilder(
@@ -25,7 +29,7 @@ public class GoogleTest extends BaseTest {
                 "-y",
                 "-f", "x11grab",
                 "-video_size", "1536x768",
-                "-i", ":99.0",
+                "-i", display, // <-- не добавляй .0, это уже полноценный DISPLAY
                 "-codec:v", "libx264",
                 "-preset", "ultrafast",
                 videoName
