@@ -19,9 +19,10 @@ public class GoogleTest extends BaseTest {
     @BeforeMethod
     public void startRecording(Method method) {
         String display = System.getenv("DISPLAY");
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("Using DISPLAY=" + display); // Для отладки
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("🎥 Using DISPLAY=" + display);
+        if (display == null) {
+            throw new RuntimeException("DISPLAY env is not set!");
+        }
         String methodName = method.getName();
         String videoName = "target/video/" + methodName + ".mp4";
         ProcessBuilder builder = new ProcessBuilder(
@@ -29,7 +30,7 @@ public class GoogleTest extends BaseTest {
                 "-y",
                 "-f", "x11grab",
                 "-video_size", "1536x768",
-                "-i", display, // <-- не добавляй .0, это уже полноценный DISPLAY
+                "-i", display,
                 "-codec:v", "libx264",
                 "-preset", "ultrafast",
                 videoName
@@ -37,6 +38,10 @@ public class GoogleTest extends BaseTest {
         builder.redirectErrorStream(true);
         try {
             new File("target/video").mkdirs();
+            System.out.println("+++++++++++++++++++++++++++++++++++++++");
+            Process process = new ProcessBuilder("sh", "-c", "ps aux | grep Xvfb").start();
+            System.out.println("+++++++++++++++++++++++++++++++++++++++");
+            process.getInputStream().transferTo(System.out);
             ffmpegProcess = builder.start();
             Thread.sleep(2000);
         } catch (IOException | InterruptedException e) {
@@ -47,6 +52,9 @@ public class GoogleTest extends BaseTest {
     @Test
     public void googlePageTitleShouldContainGoogle() throws InterruptedException {
         open("https://www.rambler.ru");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++");
+        System.out.println("🧪 DISPLAY = " + System.getenv("DISPLAY"));
+        System.out.println("+++++++++++++++++++++++++++++++++++++++");
         String title = Selenide.title();
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
     }

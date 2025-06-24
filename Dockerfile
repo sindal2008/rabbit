@@ -44,6 +44,6 @@ WORKDIR /app
 COPY . .
 
 # Запуск Xvfb и тестов
-CMD xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" mvn test \
-  -Dvideo.enabled=false \
-  -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml
+CMD xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
+  mvn test -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml
+
