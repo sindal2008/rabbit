@@ -45,9 +45,5 @@ COPY . .
 
 # Запуск Xvfb и тестов
 CMD xvfb-run --server-args="-screen 0 1920x1080x24" mvn test \
-  -Dvideo.folder=target/video \
-  -Dvideo.enabled=true \
-  -Dvideo.mode=ALL \
-  -Drecorder.type=FFMPEG \
-  -Dvideo.save.mode=ALL \
+  -Dvideo.enabled=false \
   -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml
