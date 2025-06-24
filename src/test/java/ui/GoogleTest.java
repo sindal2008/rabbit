@@ -59,6 +59,10 @@ public class GoogleTest extends BaseTest {
         System.out.println("🧪 DISPLAY = " + System.getenv("DISPLAY"));
         String title = Selenide.title();
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
+        open("https://www.yandex.ru");
+        assertTrue(title.contains("Дзен"), "Page title should contain 'Yandex'");
+        open("https://www.google.ru");
+        assertTrue(title.contains("Google"), "Page title should contain 'Google'");
     }
 
     @AfterMethod
