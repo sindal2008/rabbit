@@ -1,4 +1,4 @@
-FROM maven:3.9.6-eclipse-temurin-17 as build
+FROM maven:3.9.6-eclipse-temurin-21 as build
 
 # Установка зависимостей
 RUN apt-get update && apt-get install -y \
