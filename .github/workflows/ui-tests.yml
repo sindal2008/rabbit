@@ -26,13 +26,16 @@ jobs:
 
       - name: Archive videos
         run: |
-          cd target/videos || exit 0
-          zip -r ../../ui-test-videos.zip .
+          if [ -d target/video ]; then
+            zip -r target-videos.zip target/video
+          else
+            echo "No videos recorded."
+          fi
         if: always()
 
       - name: Upload video artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ui-test-videos
-          path: ui-test-videos.zip
+          path: target-videos.zip
         if: always()
