@@ -39,6 +39,18 @@ jobs:
           echo "Testing ffmpeg inside Docker..."
           docker run --rm ui-tests-image ffmpeg -f lavfi -i testsrc=duration=3:size=640x480:rate=25 -y /app/test.mp4
 
+      - name: Test FFMPEG screen recording
+        run: |
+          echo "Starting virtual display..."
+          Xvfb :1 -screen 0 1280x720x24 &
+          export DISPLAY=:99
+          sleep 2
+          echo "DISPLAY is $DISPLAY"
+          ffmpeg -f x11grab -video_size 1280x720 -i $DISPLAY -t 5 -y /tmp/test-recording.mp4
+          ls -lh /tmp/test-recording.mp4
+          file /tmp/test-recording.mp4
+          test -s /tmp/test-recording.mp4
+
       - name: Run tests inside Docker
         run: |
           docker run --rm \
