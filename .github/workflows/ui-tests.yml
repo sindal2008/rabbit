@@ -9,60 +9,30 @@ on:
 jobs:
   ui-tests:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install ffmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
-
-      - name: Start virtual display
-        run: |
-          echo "Starting virtual display..."
-          Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp &
-          echo "DISPLAY=:99" >> $GITHUB_ENV
-          sleep 2
-
-      - name: Test FFMPEG screen recording
-        run: |
-          echo "DISPLAY is $DISPLAY"
-          ffmpeg -f x11grab -video_size 1280x720 -i $DISPLAY -t 5 -y /tmp/test-recording.mp4
-          ls -lh /tmp/test-recording.mp4
-          file /tmp/test-recording.mp4
-          test -s /tmp/test-recording.mp4
-
-
-      - name: Build Docker image without cache
-        run: docker build --no-cache -t ui-tests-image -f Dockerfile .
-
-      - name: Test ffmpeg inside Docker
-        run: |
-          echo "Testing ffmpeg inside Docker..."
-          docker run --rm ui-tests-image ffmpeg -f lavfi -i testsrc=duration=3:size=640x480:rate=25 -y /app/test.mp4
+      - name: Build Docker image
+        run: docker build --no-cache -t ui-tests-image .
 
       - name: Run tests inside Docker
         run: |
           docker run --rm \
-          -e DISPLAY=$DISPLAY \
-          -v ${{ github.workspace }}:/app \
-          ui-tests-image \
-          mvn test \
-          -Dvideo.folder=target/videos \
-          -Dvideo.enabled=true \
-          -Dvideo.mode=ALL \
-          -Drecorder.type=FFMPEG \
-          -Dvideo.save.mode=ALL \
-          -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml
+            -v ${{ github.workspace }}:/app \
+            -w /app \
+            ui-tests-image
 
-      - name: Archive target folder
+      - name: Archive videos
         run: |
-          cd target
-          zip -r ../target.zip .
+          cd target/videos || exit 0
+          zip -r ../../ui-test-videos.zip .
         if: always()
 
-      - name: Upload target folder as artifact
+      - name: Upload video artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: target-folder
-          path: target.zip
+          name: ui-test-videos
+          path: ui-test-videos.zip
         if: always()
