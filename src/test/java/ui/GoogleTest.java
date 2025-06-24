@@ -40,10 +40,6 @@ public class GoogleTest extends BaseTest {
         builder.redirectErrorStream(true);
         try {
             new File("target/video").mkdirs();
-            System.out.println("+++++++++++++++++++++++++++++++++++++++");
-            Process process = new ProcessBuilder("sh", "-c", "ps aux | grep Xvfb").start();
-            System.out.println("+++++++++++++++++++++++++++++++++++++++");
-            process.getInputStream().transferTo(System.out);
             ffmpegProcess = builder.start();
             Thread.sleep(2000);
         } catch (IOException | InterruptedException e) {
