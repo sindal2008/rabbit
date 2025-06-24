@@ -24,7 +24,7 @@ public class GoogleTest extends BaseTest {
                 "-y",
                 "-f", "x11grab",
                 "-video_size", "1536x768",
-                "-i", System.getenv("DISPLAY"),
+                "-i", System.getenv("DISPLAY") + ".0",
                 "-codec:v", "libx264",
                 "-preset", "ultrafast",
                 videoName
