@@ -32,7 +32,7 @@ public class GoogleTest extends BaseTest {
                 "-y",
                 "-f", "x11grab",
                 "-video_size", "1536x768",
-                "-i", "99",
+                "-i", "99.0",
                 "-codec:v", "libx264",
                 "-preset", "ultrafast",
                 videoName
