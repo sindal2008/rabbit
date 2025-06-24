@@ -55,6 +55,8 @@ public class GoogleTest extends BaseTest {
         open("https://www.rambler.ru");
         String title = Selenide.title();
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
+        open("https://www.yandex.ru");
+        Thread.sleep(5000);
     }
 
     @AfterMethod
