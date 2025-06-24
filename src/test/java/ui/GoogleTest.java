@@ -5,6 +5,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
@@ -24,15 +25,17 @@ public class GoogleTest extends BaseTest {
                 "-y",
                 "-f", "x11grab",
                 "-video_size", "1536x768",
-                "-i", System.getenv("DISPLAY") + ".0",
+                "-i", ":99.0",
                 "-codec:v", "libx264",
                 "-preset", "ultrafast",
                 videoName
         );
         builder.redirectErrorStream(true);
         try {
+            new File("target/video").mkdirs();
             ffmpegProcess = builder.start();
-        } catch (IOException e) {
+            Thread.sleep(2000);
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -41,13 +44,6 @@ public class GoogleTest extends BaseTest {
     public void googlePageTitleShouldContainGoogle() throws InterruptedException {
         open("https://www.rambler.ru");
         String title = Selenide.title();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(title);
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
     }
 
