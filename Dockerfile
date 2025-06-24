@@ -42,4 +42,4 @@ COPY . .
 
 # CMD — жёстко фиксируем DISPLAY=:99, и используем его везде
 CMD xvfb-run --server-num=99 --server-args="-screen 0 1920x1080x24" \
-  mvn test -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml
+  mvn clean test -Dsurefire.suiteXmlFiles=./src/test/resources/testng.xml
