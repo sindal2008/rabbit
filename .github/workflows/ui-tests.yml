@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Starting virtual display..."
           Xvfb :1 -screen 0 1280x720x24 &
-          export DISPLAY=:1
+          export DISPLAY=:99
           sleep 2
           echo "DISPLAY is $DISPLAY"
           ffmpeg -f x11grab -video_size 1280x720 -i $DISPLAY -t 5 -y /tmp/test-recording.mp4
