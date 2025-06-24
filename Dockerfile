@@ -36,9 +36,6 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
     apt-get install -y google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
 
-# Переменная окружения для Xvfb
-# ENV DISPLAY=:99
-
 # Рабочая директория
 WORKDIR /app
 COPY . .
