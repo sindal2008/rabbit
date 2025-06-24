@@ -51,9 +51,6 @@ public class GoogleTest extends BaseTest {
     public void googlePageTitleShouldContainGoogle() throws InterruptedException {
         open("https://www.rambler.ru");
         System.out.println("🧪 DISPLAY = " + System.getenv("DISPLAY"));
-        Configuration.reportsFolder = "target/my-screenshots";
-        File screenshot = Screenshots.takeScreenShotAsFile();
-        System.out.println("Screenshot saved to: " + screenshot.getAbsolutePath());
         String title = Selenide.title();
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
     }
