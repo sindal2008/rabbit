@@ -1,4 +1,4 @@
-name: Run UI Tests in Docker with FFMPEG
+name: Run UI Tests with Chrome, FFMPEG, and Xvfb
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
       - name: Build Docker image
         run: docker build --no-cache -t ui-tests-image .
 
-      - name: Run tests inside Docker
+      - name: Run tests in Docker
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app \
@@ -29,7 +29,7 @@ jobs:
           if [ -d target/video ]; then
             zip -r target-videos.zip target/video
           else
-            echo "No videos recorded."
+            echo "No videos found."
           fi
         if: always()
 
