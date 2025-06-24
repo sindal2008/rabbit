@@ -41,6 +41,13 @@ public class GoogleTest extends BaseTest {
     public void googlePageTitleShouldContainGoogle() throws InterruptedException {
         open("https://www.rambler.ru");
         String title = Selenide.title();
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(title);
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
     }
 
