@@ -1,17 +1,18 @@
 package ui;
-
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 public class GoogleTest extends BaseTest {
 
     private static Process ffmpegProcess;
 
     @BeforeMethod
-    public static void startRecording(String methodName) {
+    public void startRecording(Method method) {
+        String methodName = method.getName();
         String videoName = "target/video/" + methodName + ".mp4";
         ProcessBuilder builder = new ProcessBuilder(
                 "ffmpeg",
