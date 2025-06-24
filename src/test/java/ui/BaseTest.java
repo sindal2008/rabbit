@@ -18,7 +18,6 @@ public abstract class BaseTest {
         options.addArguments("--user-data-dir=" + uniqueProfileDir);
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--headless=new");  // или "--headless" в старых версиях
         options.addArguments("--start-maximized");
         options.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
         Configuration.browserCapabilities = options;
