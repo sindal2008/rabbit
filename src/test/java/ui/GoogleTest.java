@@ -1,5 +1,7 @@
 package ui;
 
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Screenshots;
 import com.codeborne.selenide.Selenide;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -52,9 +54,10 @@ public class GoogleTest extends BaseTest {
     @Test
     public void googlePageTitleShouldContainGoogle() throws InterruptedException {
         open("https://www.rambler.ru");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++");
         System.out.println("🧪 DISPLAY = " + System.getenv("DISPLAY"));
-        System.out.println("+++++++++++++++++++++++++++++++++++++++");
+        Configuration.reportsFolder = "target/my-screenshots";
+        File screenshot = Screenshots.takeScreenShotAsFile();
+        System.out.println("Screenshot saved to: " + screenshot.getAbsolutePath());
         String title = Selenide.title();
         assertTrue(title.contains("Рамблер"), "Page title should contain 'Rambler'");
     }

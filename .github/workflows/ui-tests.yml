@@ -24,6 +24,20 @@ jobs:
             -w /app \
             ui-tests-image
 
+      - name: Archive screenshots
+        run: |
+          if [ -d target/screenshots ]; then
+            zip -r screenshots.zip target/screenshots
+          else
+            echo "No screenshots found."
+          fi   
+
+      - name: Upload screenshots artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: screenshots.zip
+
       - name: Archive videos
         run: |
           if [ -d target/video ]; then
